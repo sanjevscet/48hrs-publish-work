@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.text-white {
+  color: #ffffff;
+}
+
+.about {
+font-family: 'Croissant One', cursive;
+  font-size: 21px;
+}
+
+
+.container {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.submit-button {
+  background-color: #005151 !important;
+  border-color: #005151 !important;
+}
