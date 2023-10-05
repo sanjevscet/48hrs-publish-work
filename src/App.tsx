@@ -17,10 +17,11 @@ const App: React.FC = () => {
           <NavbarComponent />
         </div>
 
-        <div className="container mt-3">
+        <div className="containers mt-3 p-4">
           <Routes>
             <Route path="/skill" element={<Chart />} />
-            <Route path="/" element={<ListingPage />} />
+            <Route path="/" element={<Chart />} />
+            <Route path="/list" element={<ListingPage />} />
             <Route path="/create" element={<CreatePage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>

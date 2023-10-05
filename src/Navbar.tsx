@@ -1,7 +1,5 @@
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList, faPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from "../src/logo.png";
 import {
   BoxArrowInUpRight,

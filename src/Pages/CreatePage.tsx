@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
+import axios from "axios";
+import { API_URL } from "../Constants";
 
 const CreatePage: React.FC = () => {
   const [hoursToGive, setHoursToGive] = useState<number>(0);
   const [peoplesNeeded, setPeoplesNeeded] = useState<number>(0);
   const [textarea, setTextarea] = useState<string>("");
-  const [selectedPerk, setSelectedPerk] = useState<string>("");
+  const [offeredPerk, setOfferedPerk] = useState<string>("");
   const [selectedExpertise, setSelectedExpertise] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,29 +28,44 @@ const CreatePage: React.FC = () => {
     setTextarea(e.target.value);
   };
 
-  const handlePerkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPerk(e.target.value);
+  const handlePerkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOfferedPerk(e.target.value);
   };
 
-  const handleExpertiseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  // const handlePerkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setOfferedPerk(e.target.value);
+  // };
+
+  const handleExpertiseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedExpertise(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
-    // You can access form values using hoursToGive, peoplesNeeded, textarea, and selectedPerk states
+    // You can access form values using hoursToGive, peoplesNeeded, textarea, and offeredPerk states
     console.log("Form submitted:", {
       hoursToGive,
       peoplesNeeded,
       textarea,
-      selectedPerk,
+      offeredPerk,
       selectedExpertise,
     });
+
+    const { data } = await axios.post(API_URL + "/fetchpostedWork", {
+      hoursToGive,
+      peoplesNeeded,
+      description: textarea,
+      perks: offeredPerk,
+      expertiseRequired: selectedExpertise,
+    });
+
+    console.log(data);
+
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      navigate("/about");
+      navigate("/list");
     }, 2000);
   };
 
@@ -57,7 +74,7 @@ const CreatePage: React.FC = () => {
     setHoursToGive(0);
     setPeoplesNeeded(0);
     setTextarea("");
-    setSelectedPerk("");
+    setOfferedPerk("");
     setSelectedExpertise("");
   };
 
@@ -66,7 +83,14 @@ const CreatePage: React.FC = () => {
       {isSubmitting ? (
         <Loader />
       ) : (
-        <div style={{ marginTop: 40 }}>
+        <div
+          style={{
+            marginTop: 40,
+            width: "75%",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
           <h2 className="mb-4">Publish a new Work</h2>
           <form onSubmit={handleSubmit}>
             {/* Description */}
@@ -83,12 +107,13 @@ const CreatePage: React.FC = () => {
                 rows={3}
                 value={textarea}
                 onChange={handleTextareaChange}
+                required={true}
               />
             </div>
             {/* hourstogive */}
             <div className="mb-3">
               <label htmlFor="hours-to-give" className="form-label">
-                Hours to Give
+                Number of days required
               </label>
               <input
                 type="number"
@@ -96,6 +121,7 @@ const CreatePage: React.FC = () => {
                 id="hours-to-give"
                 value={hoursToGive}
                 onChange={handleHoursToGiveChange}
+                required={true}
               />
             </div>
             {/* peoplesNeeded */}
@@ -109,26 +135,24 @@ const CreatePage: React.FC = () => {
                 id="people-required"
                 value={peoplesNeeded}
                 onChange={handlePeoplesNeededChange}
+                required={true}
               />
             </div>
 
             {/* Perks list */}
             <div className="mb-3">
-              <label htmlFor="perks-list" className="form-label">
-                Perks Category
+              <label htmlFor="perks" className="form-label">
+                Offered Perks
               </label>
-              <select
-                id="perks-list"
-                className="form-select"
-                aria-label="Default select example"
-                value={selectedPerk}
+
+              <input
+                type="text"
+                className="form-control"
+                id="perks"
+                value={offeredPerk}
                 onChange={handlePerkChange}
-              >
-                <option selected>Select type of Perk</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+                required={true}
+              />
             </div>
 
             {/* Expertise Required */}
@@ -136,19 +160,29 @@ const CreatePage: React.FC = () => {
               <label htmlFor="expertise-list" className="form-label">
                 Required Expertise:
               </label>
-              <select
+
+              <input
+                type="text"
+                className="form-control"
+                id="expertise-list"
+                value={selectedExpertise}
+                onChange={handleExpertiseChange}
+                required={true}
+              />
+              {/* <select
                 id="expertise-list"
                 className="form-select"
                 aria-label="Default select example"
-                value={selectedExpertise}
+                defaultValue={selectedExpertise}
                 onChange={handleExpertiseChange}
+                required={true}
               >
-                <option selected>Select type of Expertise</option>
+                <option>Select type of Expertise</option>
                 <option value="1">Java</option>
                 <option value="2">React</option>
                 <option value="3">Cloud</option>
                 <option value="4">Sql</option>
-              </select>
+              </select> */}
             </div>
 
             {/* Submit and Cancel buttons */}

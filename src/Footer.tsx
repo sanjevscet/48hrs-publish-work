@@ -7,7 +7,7 @@ export default function FooterComponent() {
     <Navbar
       style={{
         backgroundColor: "#005151",
-        position: "absolute",
+        position: "fixed",
         bottom: 0,
         width: "100%",
       }}

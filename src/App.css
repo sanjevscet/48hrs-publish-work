@@ -56,3 +56,14 @@ font-family: 'Croissant One', cursive;
   background-color: #005151 !important;
   border-color: #005151 !important;
 }
+
+.ukg-color {
+  color: #005151 !important;
+}
+
+
+.listing {
+  height: 80vh;
+  overflow: auto;
+
+}

@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import axios from "axios";
+import { API_URL } from "../Constants";
+import Loader from "./Loader";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -8,7 +11,7 @@ const chartData = {
   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
   datasets: [
     {
-      label: "# of Votes",
+      label: "Developers",
       data: [12, 19, 3, 5, 2, 3],
       backgroundColor: [
         "rgba(255, 99, 132, 0.2)",
@@ -16,7 +19,6 @@ const chartData = {
         "rgba(255, 206, 86, 0.2)",
         "rgba(75, 192, 192, 0.2)",
         "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
       ],
       borderColor: [
         "rgba(255, 99, 132, 1)",
@@ -24,7 +26,6 @@ const chartData = {
         "rgba(255, 206, 86, 1)",
         "rgba(75, 192, 192, 1)",
         "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
       ],
       borderWidth: 1,
     },
@@ -49,55 +50,82 @@ export default function Chart() {
     }
   };
 
+  const [apiData, setApiData] = useState([]);
+
+  const getApiData = async () => {
+    const { data } = await axios.get(API_URL + "/getcurrentskills");
+    setApiData(data);
+  };
+
+  useEffect(() => {
+    getApiData();
+  }, []);
+
+  const labels: string[] = apiData.map((d) => {
+    const label = d[0] as string;
+    return label;
+  });
+  const values = apiData.map((d) => d[1] as number);
+  chartData.labels = labels;
+  chartData.datasets[0].data = values;
+
   return (
-    <div
-      role="figure"
-      aria-label="Poll Results Chart"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 150,
-      }}
-    >
-      <Pie
-        data={chartData}
-        options={{
-          plugins: {
-            legend: {
-              display: true,
-              labels: {
-                font: {
-                  size: 14,
+    <>
+      {values.length > 0 ? (
+        <div
+          role="figure"
+          aria-label="Poll Results Chart"
+          style={{
+            display: "flex",
+            // justifyContent: "center",
+            // alignItems: "center",
+            marginTop: 60,
+            height: "650px",
+            width: 650,
+          }}
+        >
+          <Pie
+            data={chartData}
+            options={{
+              plugins: {
+                legend: {
+                  display: true,
+                  labels: {
+                    font: {
+                      size: 14,
+                    },
+                  },
                 },
               },
-            },
-          },
-          onClick: (_, elements) => handleElementClick(elements),
-        }}
-        aria-label="Poll Results"
-        role="img"
-        aria-labelledby="chart-title"
-        tabIndex={0}
-      />
-      <div id="chart-title" style={{ display: "none" }}>
-        {portionSelected ? (
-          <>
-            <label>Selected Portion{selectedPortionName}</label>
-            <label>value{selectedPortion}</label>
-          </>
-        ) : (
-          <>
-            Poll Results Chart
-            {chartData.labels.map((l, i) => (
+              onClick: (_, elements) => handleElementClick(elements),
+            }}
+            aria-label="Poll Results"
+            role="img"
+            aria-labelledby="chart-title"
+            tabIndex={0}
+          />
+          <div id="chart-title" style={{ display: "none" }}>
+            {portionSelected ? (
               <>
-                <label>{l}</label>
-                <label>{chartData.datasets[0].data[i]}</label>
+                <label>Selected Portion{selectedPortionName}</label>
+                <label>value{selectedPortion}</label>
               </>
-            ))}
-          </>
-        )}
-      </div>
-    </div>
+            ) : (
+              <>
+                Poll Results Chart
+                {chartData.labels.map((l, i) => (
+                  <>
+                    <label>{l}</label>
+                    <label>{chartData.datasets[0].data[i]}</label>
+                  </>
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 }
