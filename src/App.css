@@ -67,3 +67,19 @@ font-family: 'Croissant One', cursive;
   overflow: auto;
 
 }
+
+.task-container {
+  width: 75%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  padding-left: 20px;
+  border-radius: 20px;
+}
+
+
+.active {
+  background-color: #087C79;
+  border-radius:  10px;
+}

@@ -4,6 +4,7 @@ import { Pie } from "react-chartjs-2";
 import axios from "axios";
 import { API_URL } from "../Constants";
 import Loader from "./Loader";
+import PieChart from "./PieChart";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -84,6 +85,14 @@ export default function Chart() {
             width: 650,
           }}
         >
+          <div
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              transform: "rotateX(45deg)", // Rotate the chart canvas
+            }}
+          ></div>
           <Pie
             data={chartData}
             options={{
