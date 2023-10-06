@@ -28,7 +28,8 @@ const ListingPage: React.FC = () => {
     fetchTasks();
   }, []);
 
-  const showToast = () => {
+  const showToast = (id: any) => {
+    console.log({ id });
     toast.success(
       "Thanks for showing interest. Concerned Manger or Director will connect you soon.",
       {
@@ -68,18 +69,28 @@ const ListingPage: React.FC = () => {
                   </div>
 
                   <div>
-                    Perks Offered: <strong>{task.extraperk}</strong>
+                    Perks Offered: <strong>{task.perks}</strong>
                   </div>
                   <div>
                     Created By: <strong>{task.designation}</strong>
                   </div>
 
-                  {role === "developer" && (
+                  {role === "developer" ? (
                     <div className="mt-2 mb-2">
-                      <Button className="submit-button" onClick={showToast}>
+                      <Button
+                        className="submit-button"
+                        onClick={() => showToast(task.id)}
+                      >
                         I am interested
                       </Button>
                     </div>
+                  ) : (
+                    task.interestedPeople && (
+                      <div>
+                        Interested People:{" "}
+                        <strong>{task.interestedPeople.join(", ")}</strong>
+                      </div>
+                    )
                   )}
                 </div>
               );

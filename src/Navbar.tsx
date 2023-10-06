@@ -48,18 +48,18 @@ export default function NavbarComponent() {
           <div className="d-flex justify-content-end">
             <Nav className="mr-auto" style={{ fontSize: 20 }}>
               <Link
-                to="/skill"
-                className={`nav-link text-white ${isActive("skill")}`}
-              >
-                <GearWideConnected />
-                <span className="ms-2">Skill Gap Analysis</span>
-              </Link>
-              <Link
                 to="/create"
                 className={`nav-link text-white ${isActive("create")}`}
               >
                 <PlusCircle />
                 <span className="ms-2">Publish Work</span>
+              </Link>
+              <Link
+                to="/skill"
+                className={`nav-link text-white ${isActive("skill")}`}
+              >
+                <GearWideConnected />
+                <span className="ms-2">Skill Gap Analysis</span>
               </Link>
               <Link
                 to="/list"
@@ -75,6 +75,13 @@ export default function NavbarComponent() {
                 <BoxArrowInUpRight />
                 <span className="ms-2">Predict Workforce Requirement</span>
               </Link>
+              <Button
+                className={`nav-link text-white submit-button`}
+                onClick={logoutClickHandler}
+              >
+                <BoxArrowInRight />
+                <span className="ms-2">Logout</span>
+              </Button>
             </Nav>
           </div>
         )}

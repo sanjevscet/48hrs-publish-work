@@ -53,11 +53,12 @@ const CreatePage: React.FC = () => {
     });
 
     const { data } = await axios.post(API_URL + "/fetchpostedWork", {
-      hoursToGive,
+      hourstogive: hoursToGive,
       peoplesNeeded,
       description: textarea,
       perks: offeredPerk,
       expertiseRequired: selectedExpertise,
+      designation: "Manager",
     });
 
     console.log(data);
